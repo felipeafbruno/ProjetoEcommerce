@@ -28,7 +28,7 @@
 
 	$app->get('/admin', function() {
 	    
-	    //User::verifyLogin();
+	    User::verifyLogin();
 
 		//$sql = new Hcode\DB\Sql();
 		//$results = $sql->select("SELECT * FROM tb_users");
@@ -207,7 +207,30 @@
 	 		"code"=>$_GET["code"]
 	 	));
 
-	 });
+	});
+
+	$app->post("/admin/forgot/reset", function() {
+
+		$forgot = User::validForgotDecrypt($_POST["code"]);
+
+		User::setForgotUsed($forgot["idrecovery"]);
+
+		$user = new User();
+
+		$user->get((int)$forgot["iduser"]);
+
+		$password = password_hash($_POST["password"], PASSWORD_BCRYPT);
+
+		$user->setPassword($password);
+
+		$page = new PageAdmin([
+  			"header"=>false,
+  			"footer"=>false
+	 	]);
+
+	 	$page->setTpl("forgot-reset-success");
+
+	});
 
 	$app->run();
 

@@ -186,7 +186,7 @@
 
 						$code = base64_encode(openssl_encrypt($dataRecovery["idrecovery"], User::CIPHER, $key, OPENSSL_RAW_DATA, $iv));
 
-						$link = "http://www.hcodecommerce.com.br:8080/admin/forgot/reset?code=$code";
+						$link = "http://www.hcodecommerce.com.br:80/admin/forgot/reset?code=$code";
 
 						$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefiner Senha da Hcode Store", "forgot", array(
 							"name"=>$data["desperson"],
@@ -219,7 +219,7 @@
 				INNER JOIN tb_users b USING(iduser)
 				INNER JOIN tb_persons c USING(idperson)
 				WHERE
-					a.idrecovery = 119
+					a.idrecovery = :idrecovery
 					AND 
 					a.dtrecovery IS NULL
 					AND
@@ -237,6 +237,27 @@
 				return $results[0];
 
 			}
+
+		}
+
+		public static function setForgotUsed($idrecovery) {
+
+			$sql = new Sql();
+
+			$sql->query("UPDATE tb_userspasswordsrecoveries SET dtrecovery = NOW() WHERE idrecovery = :idrecovery", array(
+				":idrecovery"=>$idrecovery
+			));
+
+		}
+
+		public function setPassword($password) {
+
+			$sql = new Sql();
+
+			$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
+				":password"=>$password,
+				":iduser"=>$this->getiduser()
+			));
 
 		}
 
