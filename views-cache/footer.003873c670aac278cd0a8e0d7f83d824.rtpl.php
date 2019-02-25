@@ -1,5 +1,7 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><div class="footer-top-area">
-        <div class="zigzag-bottom"></div>
+        <!--
+            <div class="zigzag-bottom"></div>
+        -->
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-6">
@@ -29,11 +31,7 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Categorias</h2>
                         <ul>
-                            <li><a href="#">Categoria Um</a></li>
-                            <li><a href="#">Categoria Dois</a></li>
-                            <li><a href="#">Categoria Três</a></li>
-                            <li><a href="#">Categoria Quarto</a></li>
-                            <li><a href="#">Categoria Cinco</a></li>
+                            <?php require $this->checkTemplate("categories-menu");?> 
                         </ul>                        
                     </div>
                 </div>
@@ -82,17 +80,17 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     
     <!-- jQuery sticky menu -->
-    <script src="res/site/js/owl.carousel.min.js"></script>
-    <script src="res/site/js/jquery.sticky.js"></script>
+    <script src="/res/site/js/owl.carousel.min.js"></script>
+    <script src="/res/site/js/jquery.sticky.js"></script>
     
     <!-- jQuery easing -->
-    <script src="res/site/js/jquery.easing.1.3.min.js"></script>
+    <script src="/res/site/js/jquery.easing.1.3.min.js"></script>
     
     <!-- Main Script -->
-    <script src="res/site/js/main.js"></script>
+    <script src="/res/site/js/main.js"></script>
     
     <!-- Slider -->
-    <script type="text/javascript" src="res/site/js/bxslider.min.js"></script>
-	<script type="text/javascript" src="res/site/js/script.slider.js"></script>
+    <script type="/res/js/javascript" src="res/site/js/bxslider.min.js"></script>
+	<script type="/res/js/javascript" src="res/site/js/script.slider.js"></script>
   </body>
 </html>
