@@ -69,6 +69,13 @@
 
 		$product->setData($_POST);
 
+		/*
+			Obserção:
+			 - Colocar uma mensagem de alerta caso o usuário 
+				esqueça de enviar uma imagem na pagína de update de 
+				produto.
+		*/
+
 		$product->setPhoto($_FILES["file"]);
 
 		$product->save();

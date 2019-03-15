@@ -1,7 +1,5 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><div class="footer-top-area">
-        <!--
-            <div class="zigzag-bottom"></div>
-        -->
+        <div class="zigzag-bottom"></div>
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-sm-6">
@@ -31,7 +29,7 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Categorias</h2>
                         <ul>
-                            <?php require $this->checkTemplate("categories-menu");?> 
+                            <?php require $this->checkTemplate("categories-menu");?>
                         </ul>                        
                     </div>
                 </div>
@@ -90,7 +88,7 @@
     <script src="/res/site/js/main.js"></script>
     
     <!-- Slider -->
-    <script type="/res/js/javascript" src="res/site/js/bxslider.min.js"></script>
-	<script type="/res/js/javascript" src="res/site/js/script.slider.js"></script>
+    <script type="text/javascript" src="/res/site/js/bxslider.min.js"></script>
+    <script type="text/javascript" src="/res/site/js/script.slider.js"></script>
   </body>
 </html>

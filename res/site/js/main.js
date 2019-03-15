@@ -2,10 +2,9 @@ jQuery(document).ready(function($){
     
     // jQuery sticky Menu
     
-	$(".mainmenu-area").sticky({topSpacing:0});
+    $(".mainmenu-area").sticky({topSpacing:0});
     
-    
-    $('.product-carousel').owlCarousel({
+    $('.owl-carousel').owlCarousel({
         loop:true,
         nav:true,
         margin:20,
@@ -17,16 +16,16 @@ jQuery(document).ready(function($){
             600:{
                 items:3,
             },
-            1000:{
+            1500:{
                 items:5,
             }
         }
     });  
     
-    $('.related-products-carousel').owlCarousel({
+    $('.owl-carousel').owlCarousel({
         loop:true,
         nav:true,
-        margin:20,
+        margin:120,
         responsiveClass:true,
         responsive:{
             0:{
@@ -44,7 +43,7 @@ jQuery(document).ready(function($){
         }
     });  
     
-    $('.brand-list').owlCarousel({
+    $('.owl-carousel').owlCarousel({
         loop:true,
         nav:true,
         margin:20,
