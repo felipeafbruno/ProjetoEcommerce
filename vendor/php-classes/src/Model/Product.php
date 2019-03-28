@@ -8,28 +8,6 @@
 
 	class Product extends Model {
 
-		public static function listAll() {
-
-			$sql = new Sql();
-
-			return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
-
-		}
-
-		public static function checkList($list) {
-
-			foreach($list as &$row) {
-
-				$p = new Product();
-				$p->setData($row);
-				$row = $p->getValues();
-
-			}
-
-			return $list;
-
-		}
-
 		public function save() {
 
 			$sql = new Sql();
@@ -71,36 +49,25 @@
 
 		}
 
-		public function checkPhoto() {
+		public static function listAll() {
 
-		if(file_exists(
-			$_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.
-			'res'.DIRECTORY_SEPARATOR.
-			'site'.DIRECTORY_SEPARATOR.
-			'img'.DIRECTORY_SEPARATOR.
-			'products'.DIRECTORY_SEPARATOR.
-			 $this->getidproduct().".jpg"
-		)) {
+			$sql = new Sql();
 
-			$url = "/res/site/img/products/".$this->getidproduct().".jpg";
-
-		} else {
-
-			$url = "/res/site/img/product.jpg";
+			return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
 
 		}
 
-			return $this->setdesphoto($url);
+		public static function checkList($list) {
 
-		}
+			foreach($list as &$row) {
 
-		public function getValues(){
+				$p = new Product();
+				$p->setData($row);
+				$row = $p->getValues();
 
-			$this->checkPhoto();
+			}
 
-			$values = parent::getValues();
-
-			return $values;
+			return $list;
 
 		}
 
@@ -140,6 +107,39 @@
 
 		}
 
+		public function checkPhoto() {
+
+		if(file_exists(
+			$_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.
+			'res'.DIRECTORY_SEPARATOR.
+			'site'.DIRECTORY_SEPARATOR.
+			'img'.DIRECTORY_SEPARATOR.
+			'products'.DIRECTORY_SEPARATOR.
+			 $this->getidproduct().".jpg"
+		)) {
+
+			$url = "/res/site/img/products/".$this->getidproduct().".jpg";
+
+		} else {
+
+			$url = "/res/site/img/product.jpg";
+
+		}
+
+			return $this->setdesphoto($url);
+
+		}
+
+		public function getValues(){
+
+			$this->checkPhoto();
+
+			$values = parent::getValues();
+
+			return $values;
+
+		}
+
 		public function getFromURL($desurl) {
 
 			$sql = new Sql();
@@ -164,6 +164,7 @@
 				':idproduct'=>$this->getidproduct()
 			]);
 		}
+
 	}
 
 ?>

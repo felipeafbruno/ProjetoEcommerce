@@ -69,7 +69,67 @@
 
 		$page = new Page();
 
-		$page->setTpl("cart");
+		$page->setTpl("cart", [
+			'cart'=>$cart->getValues(),
+			'products'=>$cart->getProductsCart()
+		]);
+
+	});
+
+	$app->get("/cart/:idproduct/add", function($idproduct) {
+
+		$product = new Product();
+
+		$product->get((int) $idproduct);
+
+		$cart = new Cart();
+
+		$cart = Cart::getFromSession();
+
+		$qtd = (isset($_GET['qtd'])) ? (int) $_GET['qtd'] : 1;
+
+		for($i = 0; $i < $qtd; $i++){
+
+			$cart->addProductCart($product);
+
+		}
+
+		header("Location: /cart");
+		exit;
+
+	});
+
+	$app->get("/cart/:idproduct/minus", function($idproduct) {
+
+		$product = new Product();
+
+		$product->get((int) $idproduct);
+
+		$cart = new Cart();
+
+		$cart = Cart::getFromSession();
+
+		$cart->removeProductCart($product);
+
+		header("Location: /cart");
+		exit;
+
+	});
+
+	$app->get("/cart/:idproduct/remove", function($idproduct) {
+
+		$product = new Product();
+
+		$product->get((int) $idproduct);
+
+		$cart = new Cart();
+
+		$cart = Cart::getFromSession();
+
+		$cart->removeProductCart($product, true);
+
+		header("Location: /cart");
+		exit;
 
 	});
 
