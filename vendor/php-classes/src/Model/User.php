@@ -11,6 +11,7 @@
 		const SESSION = "User";
 		const SECRET = "HcodePhp7_Secret";
 		const CIPHER = "AES-256-CBC";
+		const SESSION_ERROR = "UserError";
 		
 		public function getFromSession() {
 
@@ -73,7 +74,7 @@
 				||
 				!(int)$_SESSION[User::SESSION]["iduser"] > 0
 			) {
-
+				//Não esta logado.
 				return false;
 
 			} else {
@@ -135,9 +136,9 @@
 			$sql = new Sql();
 
 			$results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
-				":desperson"=>$this->getdesperson(),
+				":desperson"=>utf8_decode($this->getdesperson()),
 				":deslogin"=>$this->getdeslogin(),
-				":despassword"=>$this->getdespassword(),
+				":despassword"=>User::getPasswordHash($this->getdespassword()),
 				":desemail"=>$this->getdesemail(),
 				":nrphone"=>$this->getnrphone(),
 				":inadmin"=>$this->getinadmin()
@@ -155,7 +156,11 @@
 				":iduser"=>$iduser
 			));
 
-			$this->setData($results[0]);
+			$data = $results[0];
+
+			$data['desperson'] = utf8_decode($data['desperson']);
+
+			$this->setData($data);
 
 		}
 
@@ -165,9 +170,9 @@
 
 			$results = $sql->select("CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
 				":iduser"=>$this->getiduser(),
-				":desperson"=>$this->getdesperson(),
+				":desperson"=>utf8_decode($this->getdesperson()),
 				":deslogin"=>$this->getdeslogin(),
-				":despassword"=>$this->getdespassword(),
+				":despassword"=>User::getPasswordHash($this->getdespassword()),
 				":desemail"=>$this->getdesemail(),
 				":nrphone"=>$this->getnrphone(),
 				":inadmin"=>$this->getinadmin()
@@ -305,6 +310,34 @@
 				":password"=>$password,
 				":iduser"=>$this->getiduser()
 			));
+
+		}
+
+		public static function setMsgError($msg) {
+
+			$_SESSION[User::SESSION_ERROR] = $msg;
+
+		}
+
+		public static function getMsgError() {
+
+			$msg = (isset($_SESSION[User::SESSION_ERROR])) ? $_SESSION[User::SESSION_ERROR] : "";
+
+			Cart::clearMsgError();
+
+			return $msg;
+
+		}
+
+		public static function clearMsgError() {
+
+			$_SESSION[User::SESSION_ERROR] = NULL;
+
+		}
+
+		public static function getPasswordHash($password) {
+
+			return password_hash($password, PASSWORD_BCRYPT);
 
 		}
 
