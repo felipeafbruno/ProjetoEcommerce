@@ -35,6 +35,7 @@
 				":LOGIN"=>$login
 			));
 
+
 			if(count($results) === 0) {
 
 				throw new \Exception("Usuário inexistente ou senha inválida.");
@@ -42,7 +43,6 @@
 			}
 
 			$data = $results[0];
-
 
 			if(password_verify($password, $data["despassword"]) === true) {
 
@@ -119,6 +119,7 @@
 		public static function logout() {
 
 			$_SESSION[User::SESSION] = NULL;
+			$_SESSION[Cart::SESSION] = NULL;
 		}
 
 		public static function listAll() {
