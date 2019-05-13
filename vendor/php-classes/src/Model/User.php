@@ -11,7 +11,8 @@
 		const SESSION = "User";
 		const SECRET = "HcodePhp7_Secret";
 		const CIPHER = "AES-256-CBC";
-		const SESSION_ERROR = "UserError";
+		const USER_ERROR = "UserEror";
+		const USER_ERROR_REGISTER = "UserErrorRegister";
 		
 		public function getFromSession() {
 
@@ -313,25 +314,59 @@
 
 		}
 
-		public static function setMsgError($msg) {
+		public static function setUserError($msg) {
 
-			$_SESSION[User::SESSION_ERROR] = $msg;
+			$_SESSION[User::USER_ERROR] = $msg;
 
 		}
 
-		public static function getMsgError() {
+		public static function getUserError() {
 
-			$msg = (isset($_SESSION[User::SESSION_ERROR])) ? $_SESSION[User::SESSION_ERROR] : "";
+			$msg = (isset($_SESSION[User::USER_ERROR])) ? $_SESSION[User::USER_ERROR] : "";
 
-			Cart::clearMsgError();
+			User::clearUserError();
 
 			return $msg;
 
 		}
 
-		public static function clearMsgError() {
+		public static function clearUserError() {
 
-			$_SESSION[User::SESSION_ERROR] = NULL;
+			$_SESSION[User::USER_ERROR] = NULL;
+
+		}
+
+		public static function setUserErrorRegister($msg) {
+
+			$_SESSION[User::USER_ERROR_REGISTER] = $msg;
+
+		}
+
+		public static function getUserErrorRegister() {
+
+			$msg = (isset($_SESSION[User::USER_ERROR_REGISTER]) && $_SESSION[User::USER_ERROR_REGISTER]) ? $_SESSION[User::USER_ERROR_REGISTER] : '';
+
+			User::clearUserErrorRegister();
+
+			return $msg;
+
+		}
+
+		public static function clearUserErrorRegister() {
+
+			$_SESSION[User::USER_ERROR_REGISTER] = NULL;
+
+		}
+
+		public static function checkLoginExist($login) {
+
+			$sql = new Sql();
+
+			$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [
+				':deslogin'=>$login
+			]);
+
+			return (count($results) > 0);
 
 		}
 

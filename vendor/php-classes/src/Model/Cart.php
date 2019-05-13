@@ -252,11 +252,11 @@
 			
 				if($result->MsgErro != '') {
 
-					Cart::setMsgError($result->MsgErro);
+					Cart::setCartError($result->MsgErro);
 
 				} else {
 
-					Cart::clearMsgError();
+					Cart::clearCartError();
 
 				}
 
@@ -283,23 +283,23 @@
 
 		}
 
-		public static function setMsgError($msg) {
+		public static function setCartError($msg) {
 
 			$_SESSION[Cart::SESSION_ERROR] = $msg;
 
 		}
 
-		public static function getMsgError() {
+		public static function getCartError() {
 
 			$msg = (isset($_SESSION[Cart::SESSION_ERROR])) ? $_SESSION[Cart::SESSION_ERROR] : "";
 
-			Cart::clearMsgError();
+			Cart::clearCartError();
 
 			return $msg;
 
 		}
 
-		public static function clearMsgError() {
+		public static function clearCartError() {
 
 			$_SESSION[Cart::SESSION_ERROR] = NULL;
 
