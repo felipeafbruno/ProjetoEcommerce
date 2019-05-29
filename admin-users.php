@@ -66,8 +66,6 @@
 
 		$_POST["inadmin"] = (isset($_POST["inadmin"])) ? 1 : 0;
 
-		$_POST["despassword"] = password_hash($_POST["despassword"], PASSWORD_BCRYPT);
-
 		$user->setData($_POST);
 
 		$user->save();
@@ -153,7 +151,7 @@
 
 		$user->get((int)$forgot["iduser"]);
 
-		$password = password_hash($_POST["password"], PASSWORD_BCRYPT);
+		$password = $_POST["password"];
 
 		$user->setPassword($password);
 

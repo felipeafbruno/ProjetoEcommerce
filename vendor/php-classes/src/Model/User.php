@@ -9,10 +9,11 @@
 	class User extends Model {
 
 		const SESSION = "User";
-		const SECRET = "HcodePhp7_Secret";
-		const CIPHER = "AES-256-CBC";
+		const SECRET = "HcodePhp7Secret";
+		const CIPHER = "aes-256-cbc";
 		const USER_ERROR = "UserEror";
 		const USER_ERROR_REGISTER = "UserErrorRegister";
+		const SUCESS = 'UserSucess';
 		
 		public function getFromSession() {
 
@@ -46,7 +47,7 @@
 
 			$data = $results[0];
 
-			if(password_verify($password, $data["despassword"]) === true) {
+			if(password_verify($password, $data['despassword']) === true) {
 
 				$user = new User();	
 
@@ -99,11 +100,11 @@
 		} 
 
 		public static function verifyLogin($inadmin = true) {
-		
+			
 			if (!User::checkLogin($inadmin)) {
 				
 				if ($inadmin) {
-				
+
 					header("Location: /admin/login");
 
 				} else {
@@ -173,7 +174,7 @@
 				":iduser"=>$this->getiduser(),
 				":desperson"=>utf8_decode($this->getdesperson()),
 				":deslogin"=>$this->getdeslogin(),
-				":despassword"=>User::getPasswordHash($this->getdespassword()),
+				":despassword"=>$this->getdespassword(),
 				":desemail"=>$this->getdesemail(),
 				":nrphone"=>$this->getnrphone(),
 				":inadmin"=>$this->getinadmin()
@@ -236,10 +237,17 @@
 
 						$key = hex2bin('5ae1b8a17bad4da4fdac796f64c16ecd');
 						$iv = hex2bin('34857d973953e44afb49ea9d61104d8c');
-
 						$code = base64_encode(openssl_encrypt($dataRecovery["idrecovery"], User::CIPHER, $key, OPENSSL_RAW_DATA, $iv));
 
-						$link = "http://www.hcodecommerce.com.br:80/admin/forgot/reset?code=$code";
+						if($inadmin === true) {
+
+							$link = "http://www.hcodecommerce.com.br:80/admin/forgot/reset?code=$code";
+
+						} else {
+
+							$link = "http://www.hcodecommerce.com.br:80/forgot/reset?code=$code";
+
+						}
 
 						$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefiner Senha da Hcode Store", "forgot", array(
 							"name"=>$data["desperson"],
@@ -261,12 +269,12 @@
 
 		public static function validForgotDecrypt($code) {
 
-			$key = hex2bin('5ae1b8a17bad4da4fdac796f64c16ecd');
+	     	$key = hex2bin('5ae1b8a17bad4da4fdac796f64c16ecd');
 			$iv = hex2bin('34857d973953e44afb49ea9d61104d8c');
-
 			$idrecovery = openssl_decrypt(base64_decode($code), User::CIPHER, $key, OPENSSL_RAW_DATA, $iv);
 
 			$sql = new Sql();
+
 			$results = $sql->select("
 				SELECT * FROM tb_userspasswordsrecoveries a
 				INNER JOIN tb_users b USING(iduser)
@@ -307,8 +315,8 @@
 
 			$sql = new Sql();
 
-			$sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
-				":password"=>$password,
+			$result = $sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
+				":password"=>User::getPasswordHash($password),
 				":iduser"=>$this->getiduser()
 			));
 
@@ -358,6 +366,28 @@
 
 		}
 
+		public static function setMsgSucess($msg) {
+
+			$_SESSION[User::SUCESS] = $msg;
+
+		}
+
+		public static function getMsgSucess() {
+
+			$msg = (isset($_SESSION[User::SUCESS])) ? $_SESSION[User::SUCESS] : "";
+
+			User::clearMsgSucess();
+
+			return $msg;
+
+		}
+
+		public static function clearMsgSucess() {
+
+			$_SESSION[User::SUCESS] = NULL;
+
+		}
+
 		public static function checkLoginExist($login) {
 
 			$sql = new Sql();
@@ -370,9 +400,21 @@
 
 		}
 
+		public static function checkEmailExist($email) {
+
+			$sql = new Sql();
+
+			$results = $sql->select("SELECT * FROM tb_users WHERE desemail = :desemail", [
+				':desemail'=>$email
+			]);
+
+			return (count($results) > 0);
+
+		}
+
 		public static function getPasswordHash($password) {
 
-			return password_hash($password, PASSWORD_BCRYPT);
+			return password_hash($password, PASSWORD_DEFAULT, ['cost'=>10]);
 
 		}
 

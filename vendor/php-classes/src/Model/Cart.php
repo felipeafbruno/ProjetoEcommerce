@@ -228,6 +228,7 @@
 
 				if($totals['vlwidth'] < 11) $totals['vlwidth'] = 11;
 				if($totals['vllength'] < 16) $totals['vllength'] = 16;
+				if($totals['vlheight'] < 2) $totals['vlheight'] = 2;
 
 				$qs = http_build_query([
 					'nCdEmpresa'=>'',
