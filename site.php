@@ -158,7 +158,7 @@
 
 		$cart = Cart::getFromSession();
 
-		if(isset($_GET['deszipcode'])) {
+		if(!isset($_GET['deszipcode'])) {
 
 			$_GEST['deszipcode'] = $cart->getzipcode();
 
