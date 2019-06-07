@@ -629,4 +629,81 @@
 
 	});
 
+	$app->get("/profile/change-password", function(){
+
+		User::verifyLogin(false);
+
+		$page = new Page();
+
+		$page->setTpl("profile-change-password",[
+			'changePassError'=>User::getUserError(),
+			'changePassSuccess'=>User::getMsgSucess()
+		]);
+
+	});
+
+	$app->post("/profile/change-password", function(){
+
+		User::verifyLogin(false);
+
+		if(!isset($_POST['current_pass']) || $_POST['current_pass'] === '') {
+
+			User::setUserError("Digite a senha atual.");
+			header("Location: /profile/change-password");
+			exit;
+
+		}
+
+		if(!isset($_POST['new_pass']) || $_POST['new_pass'] === '') {
+
+			User::setUserError("Digite a nova senha.");
+			header("Location: /profile/change-password");
+			exit;
+
+		}
+
+		if(!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm'] === '') {
+
+			User::setUserError("Confirme a nova senha.");
+			header("Location: /profile/change-password");
+			exit;
+
+		}
+
+		if($_POST['current_pass'] === $_POST['new_pass']) {
+
+			User::setUserError("A sua senha deve ser diferente da atual.");
+			header("Location: /profile/change-password");
+			exit;
+
+		}
+
+		$user = User::getFromSession();
+
+		if(!password_verify($_POST['current_pass'], $user->getdespassword())) {
+
+			User::setUserError("A senha está inválida.");
+			header("Location: /profile/change-password");
+			exit;
+
+		} else {
+			
+			$user->setPassword($_POST['new_pass']);
+
+			User::setMsgSucess("Senha alterada com sucesso.");
+
+			header("Location: /profile/change-password");
+			exit;
+
+		}
+
+		$page = new Page();
+
+		$page->setTpl("profile-change-password",[
+			'changePassError'=>'',
+			'changePassSuccess'=>''
+		]);
+
+	});
+
 ?>
