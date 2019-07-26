@@ -9,10 +9,11 @@
 	use Rain\Tpl;
 
 	class Mailer {
-	
-		const USERNAME = "conta.apenas.teste@gmail.com";
+		//necessario colocar uma conta e senha para funcionar corretamente.
+		//retirei a minha por segurança.
+		const USERNAME = "";
 
-		const PASSWORD = "c0nt@t35te@";
+		const PASSWORD = "";
 
 		const NAME_FROM = "Hcode Store";
 
