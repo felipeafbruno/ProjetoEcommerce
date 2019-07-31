@@ -36,8 +36,6 @@
 			]);
 
 		}
-		
-		$products = Product::listAll();
 
 		$page = new PageAdmin();
 
