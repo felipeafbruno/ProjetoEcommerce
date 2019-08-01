@@ -194,7 +194,7 @@
 				LIMIT $start, $itemsPerPage;
 			", [
 				':search'=>'%'.$search.'%',
-				':id'=>$search
+				':idorder'=>$search
 			]);
 
 			$resultTotal = $sql->select("
