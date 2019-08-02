@@ -51,10 +51,17 @@
 
 			$sql = new Sql();
 
-			$results = $sql->select("CALL sp_addresses_save(:idaddress, :idperson, :desaddress, :descomplement, :descity, :desstate, :descountry, :deszipcode, :desdistrict)", [
+			if($this->getidaddress() == NULL){
+
+				$this->setidaddress(0);
+
+			}
+			
+			$results = $sql->select("CALL sp_addresses_save(:idaddress, :idperson, :desaddress, :desnumber, :descomplement, :descity, :desstate, :descountry, :deszipcode, :desdistrict)", [
 				':idaddress'=>$this->getidaddress(),
 				':idperson'=>$this->getidperson(),
 				':desaddress'=>$this->getdesaddress(),
+				':desnumber'=>$this->getdesnumber(),
 				':descomplement'=>$this->getdescomplement(),
 				':descity'=>$this->getdescity(),
 				':desstate'=>$this->getdesstate(),
