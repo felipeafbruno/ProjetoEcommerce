@@ -23,6 +23,6 @@
     "grunt-includes": "^0.4.5"
   },
   "dependencies": {
-    "yarn": "^1.17.3"
+    "yarn": "^1.22.0"
   }
 }
